@@ -9,13 +9,10 @@ const Product = ({ product }) => {
 
   return (
     <Card className="mb-3 h-100">
-      {" "}
       <Link to={`/detail/${product.id}`}>
-        {" "}
         <Card.Img variant="top" src={product.thumbnail} alt={product.name} />
       </Link>
       <Card.Body className="d-flex flex-column">
-        {" "}
         <Card.Title>
           <Link
             to={`/detail/${product.id}`}
@@ -25,9 +22,14 @@ const Product = ({ product }) => {
           </Link>
         </Card.Title>
         <Card.Text>{product.price} $</Card.Text>
-        <Link to={`/detail/${product.id}`} className="mt-auto">
+        <Button
+          variant="primary"
+          as={Link}
+          to={`/detail/${product.id}`}
+          className="mt-auto"
+        >
           Detail
-        </Link>{" "}
+        </Button>
       </Card.Body>
     </Card>
   );
