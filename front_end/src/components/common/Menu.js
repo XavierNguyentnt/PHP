@@ -1,7 +1,6 @@
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import axios_instance from "../../util/axios_instance";
-import "./Menu.css";
 
 const Menu = () => {
   const [categories, setCategories] = useState([]);
@@ -16,7 +15,7 @@ const Menu = () => {
   return (
     <nav className="navbar navbar-expand-lg bg-body-tertiary">
       <div className="container">
-        <a className="navbar-brand category" href="/">
+        <a className="navbar-brand" href="/">
           Navbar
         </a>
 
