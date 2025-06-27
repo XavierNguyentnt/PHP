@@ -6,43 +6,49 @@ import axios_instance from "../../util/axios_instance";
 const Home = () => {
   const [featuredProducts, setFeaturedProducts] = useState([]);
   const [latestProducts, setLatestProducts] = useState([]);
-  //get data featured products
+  // get data featured product
   const get_featured = async () => {
-    const url = "/featured_products.php";
-    const response = await axios_instance.get(url);
-    const data = response.data.data;
-    setFeaturedProducts(data);
+    try {
+      const url = "/featured_product.php";
+      const rs = await axios_instance.get(url);
+      const data = rs.data.data;
+      setFeaturedProducts(data);
+    } catch (error) {
+      console.error("Error fetching featured products:", error);
+    }
   };
-  //get data latest products
+  // get data latest product
   const get_latest = async () => {
-    const url = "/latest_products.php";
-    const response = await axios_instance.get(url);
-    const data = response.data.data;
-    setLatestProducts(data);
+    try {
+      const url = "/latest_product.php";
+      const rs = await axios_instance.get(url);
+      const data = rs.data.data;
+      setLatestProducts(data);
+    } catch (error) {
+      console.error("Error fetching latest products:", error);
+    }
   };
-
   useEffect(() => {
     get_featured();
     get_latest();
   }, []);
-
   return (
     <Container>
       <h2>Featured Products</h2>
-      <Row className="g-4">
+      <Row>
         {featuredProducts.map((e, k) => {
           return (
-            <Col xs={12} sm={6} md={4} lg={3} key={k} className="d-flex">
+            <Col xs={3} key={k}>
               <Product product={e} />
             </Col>
           );
         })}
       </Row>
-      <h2 className="mt-5">Latest Products</h2>
-      <Row className="g-4">
+      <h2>Latest Products</h2>
+      <Row>
         {latestProducts.map((e, k) => {
           return (
-            <Col xs={3} sm={6} md={4} lg={3} key={k} className="d-flex">
+            <Col xs={3} key={k}>
               <Product product={e} />
             </Col>
           );

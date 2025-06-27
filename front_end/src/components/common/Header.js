@@ -1,4 +1,4 @@
-import { Col, Row, Button, Container } from "react-bootstrap";
+import { Col, Row } from "react-bootstrap";
 import { Link } from "react-router-dom";
 
 function Header() {
@@ -9,15 +9,10 @@ function Header() {
           <h1>LOGO</h1>
         </Col>
         <Col xs={6} className="text-right">
-          <Container>
-            <Button>
-              {" "}
-              <Link to={"/login"}>Login</Link>
-            </Button>
-            <Button>
-              <Link to={"/register"}>Regsiter</Link>
-            </Button>
-          </Container>
+          <Link className="p-2" to={"/login"}>
+            Login
+          </Link>
+          <Link to={"/register"}>Regsiter</Link>
         </Col>
       </Row>
     </header>

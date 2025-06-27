@@ -1,13 +1,20 @@
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import axios_instance from "../../util/axios_instance";
-
+import UserContext from "../../context/context";
+import { useContext } from "react";
+import { Badge } from "react-bootstrap";
 const Menu = () => {
+  const { state, dispatch } = useContext(UserContext);
   const [categories, setCategories] = useState([]);
   const get_menu = async () => {
-    const url = "/categories.php";
-    const rs = await axios_instance.get(url);
-    setCategories(rs.data.data);
+    try {
+      const url = "/categories.php";
+      const rs = await axios_instance.get(url);
+      setCategories(rs.data.data);
+    } catch (error) {
+      console.error("Error fetching categories:", error);
+    }
   };
   useEffect(() => {
     get_menu();
@@ -15,26 +22,42 @@ const Menu = () => {
   return (
     <nav className="navbar navbar-expand-lg bg-body-tertiary">
       <div className="container">
-        <a className="navbar-brand" href="/">
+        <a className="navbar-brand" href="#">
           Navbar
         </a>
-
+        <button
+          className="navbar-toggler"
+          type="button"
+          data-bs-toggle="collapse"
+          data-bs-target="#navbarSupportedContent"
+          aria-controls="navbarSupportedContent"
+          aria-expanded="false"
+          aria-label="Toggle navigation"
+        >
+          <span className="navbar-toggler-icon"></span>
+        </button>
         <div className="collapse navbar-collapse" id="navbarSupportedContent">
           <ul className="navbar-nav me-auto mb-2 mb-lg-0">
-            <li className="menu-item">
-              <Link className="nav-link menu-item" aria-current="page" to="/">
+            <li className="nav-item">
+              <Link className="nav-link active" aria-current="page" to="/">
                 Home
               </Link>
             </li>
             {categories.map((e, k) => {
               return (
-                <li key={k} className="menu-item">
+                <li key={k} className="nav-item">
                   <Link className="nav-link" to={"/category/" + e.id}>
                     {e.name}
                   </Link>
                 </li>
               );
             })}
+
+            <li className="nav-item">
+              <Link className="nav-link" to={"/cart"}>
+                Cart <Badge bg="secondary">{state.cart.length}</Badge>
+              </Link>
+            </li>
           </ul>
           <form className="d-flex" role="search">
             <input

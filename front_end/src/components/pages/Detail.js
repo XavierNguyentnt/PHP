@@ -1,124 +1,79 @@
+import { useContext, useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
-import { useState, useEffect } from "react";
-import axios_instance from "../../util/axios_instance";
-import { Container, Row, Col } from "react-bootstrap";
-
+import axios_instance from "./../../util/axios_instance";
+import { Col, Container, Row } from "react-bootstrap";
+import UserContext from "../../context/context";
+import { type } from "@testing-library/user-event/dist/type";
 const Detail = () => {
   const { id } = useParams();
   const [product, setProduct] = useState({});
-
-  useEffect(() => {
-    const get_detail = async () => {
-      const url = `/detail_products.php?id=${id}`;
-      const response = await axios_instance.get(url);
-      const data = response.data.data;
+  const [buyQty, setBuyQty] = useState(1);
+  const get_detail = async () => {
+    try {
+      const url = "/detail_product.php?id=" + id;
+      const rs = await axios_instance.get(url);
+      const data = rs.data.data;
       setProduct(data);
-    };
+    } catch (error) {
+      console.error(`Error fetching product detail for id ${id}:`, error);
+    }
+  };
+  useEffect(() => {
     get_detail();
   }, [id]);
+  const inputHandle = (e) => {
+    const v =
+      e.target.value > 0 && e.target.value <= product.qty
+        ? e.target.value
+        : product.qty;
+    setBuyQty(v);
+  };
+  // gọi đến context để nạp sản phẩm vào giỏ
+  const { state, dispatch } = useContext(UserContext);
+  const add_to_cart = () => {
+    product.buyQty = buyQty; // set số lượng cần mua vào chính sản phẩm
+    const cart = state.cart;
+    cart.push(product);
 
-  // const [loading, setLoading] = useState(true); // Thêm state loading
-  // const [error, setError] = useState(null); // Thêm state error
-
-  // Hàm lấy chi tiết sản phẩm
-  // const fetchProductDetails = async () => {
-  //   setLoading(true); // Bắt đầu tải, đặt loading = true
-  //   setError(null); // Xóa lỗi cũ (nếu có)
-
-  //   try {
-  //     const url = `/detail_products.php?id=${id}`;
-  //     const response = await axios_instance.get(url);
-  //     const data = response.data.data;
-
-  //     if (data) {
-  //       // Nếu API trả về một đối tượng, đặt nó vào một mảng
-  //       // Nếu API trả về một mảng, nó vẫn hoạt động đúng
-  //       setProduct(Array.isArray(data) ? data[0] : data);
-  //     } else {
-  //       setProduct(null); // Không tìm thấy sản phẩm
-  //       setError("Không tìm thấy sản phẩm với ID này.");
-  //     }
-  //   } catch (err) {
-  //     console.error("Lỗi khi lấy chi tiết sản phẩm:", err);
-  //     setError("Không thể tải chi tiết sản phẩm. Vui lòng thử lại sau.");
-  //   } finally {
-  //     setLoading(false); // Kết thúc tải, đặt loading = false
-  //   }
-  // };
-
-  // useEffect(() => {
-  //   if (id) {
-  //     // Đảm bảo có ID trước khi fetch
-  //     fetchProductDetails();
-  //   } else {
-  //     setLoading(false);
-  //     setError("ID sản phẩm không hợp lệ.");
-  //   }
-  // }, [id]);
-
-  // if (loading) {
-  //   return (
-  //     <Container className="text-center my-5">
-  //       <Spinner animation="border" role="status">
-  //         <span className="visually-hidden">Loading...</span>
-  //       </Spinner>
-  //       <p>Loading Product Details...</p>
-  //     </Container>
-  //   );
-  // }
-
-  // if (error) {
-  //   return (
-  //     <Container className="text-center my-5">
-  //       <div className="alert alert-danger" role="alert">
-  //         {error}
-  //       </div>
-  //     </Container>
-  //   );
-  // }
-
-  // if (!product) {
-  //   return (
-  //     <Container className="text-center my-5">
-  //       <div className="alert alert-warning" role="alert">
-  //         Can not find product: {product.name} with id: {id}.
-  //       </div>
-  //     </Container>
-  //   );
-  // }
-
+    dispatch({
+      type: "UPDATE_CART",
+      payload: cart,
+    });
+  };
   return (
-    <Container className="my-5">
+    <Container>
       <Row>
         <Col xs={6}>
-          <img
-            src={product.thumbnail}
-            alt={product.name}
-            className="img-fluid mb-3"
-          />
+          <img src={product.thumbnail} className="w-100 img-thumbnail" />
         </Col>
-        <Col xs={6}>
+        <Col xs={6} className="text-start">
           <h1>{product.name}</h1>
-          <p>{product.price} $</p>
+          <p>${product.price}</p>
           <p>{product.description}</p>
-          <div className="input-group mb-3">
+
+          <div className="input-group mb-3 w-50">
             <input
               type="number"
+              onChange={inputHandle}
+              value={buyQty}
               min={1}
               max={product.qty}
               className="form-control"
             />
-            <button className="btn btn-primary" type="button">
-              Add to Cart
+            <button
+              onClick={add_to_cart}
+              class="btn btn-outline-primary"
+              type="button"
+            >
+              Add to cart
             </button>
           </div>
           <p>
-            <i>Số lượng còn lại trong kho: {product.qty}</i>
+            <i>Số lượng còn trong kho: {product.qty}</i>
           </p>
         </Col>
       </Row>
     </Container>
   );
 };
-
 export default Detail;
