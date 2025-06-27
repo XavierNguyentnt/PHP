@@ -4,12 +4,13 @@ import axios_instance from "../../util/axios_instance";
 import UserContext from "../../context/context";
 import { useContext } from "react";
 import { Badge } from "react-bootstrap";
+import URL from "../../util/url";
 const Menu = () => {
   const { state, dispatch } = useContext(UserContext);
   const [categories, setCategories] = useState([]);
   const get_menu = async () => {
     try {
-      const url = "/categories.php";
+      const url = URL.CATEGORIES;
       const rs = await axios_instance.get(url);
       setCategories(rs.data.data);
     } catch (error) {
@@ -22,9 +23,7 @@ const Menu = () => {
   return (
     <nav className="navbar navbar-expand-lg bg-body-tertiary">
       <div className="container">
-        <a className="navbar-brand" href="#">
-          Navbar
-        </a>
+        <span className="navbar-brand">Navbar</span>
         <button
           className="navbar-toggler"
           type="button"

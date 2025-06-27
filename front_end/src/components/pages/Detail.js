@@ -3,14 +3,15 @@ import { useParams } from "react-router-dom";
 import axios_instance from "./../../util/axios_instance";
 import { Col, Container, Row } from "react-bootstrap";
 import UserContext from "../../context/context";
-import { type } from "@testing-library/user-event/dist/type";
+import URL from "../../util/url";
+
 const Detail = () => {
   const { id } = useParams();
   const [product, setProduct] = useState({});
   const [buyQty, setBuyQty] = useState(1);
   const get_detail = async () => {
     try {
-      const url = "/detail_product.php?id=" + id;
+      const url = URL.DETAIL_PRODUCT + id;
       const rs = await axios_instance.get(url);
       const data = rs.data.data;
       setProduct(data);
@@ -22,22 +23,37 @@ const Detail = () => {
     get_detail();
   }, [id]);
   const inputHandle = (e) => {
-    const v =
-      e.target.value > 0 && e.target.value <= product.qty
-        ? e.target.value
-        : product.qty;
-    setBuyQty(v);
+    let value = parseInt(e.target.value, 10);
+    if (isNaN(value) || value < 1) {
+      value = 1;
+    } else if (value > product.qty) {
+      value = product.qty;
+    }
+    setBuyQty(value);
   };
   // gọi đến context để nạp sản phẩm vào giỏ
   const { state, dispatch } = useContext(UserContext);
   const add_to_cart = () => {
-    product.buyQty = buyQty; // set số lượng cần mua vào chính sản phẩm
-    const cart = state.cart;
-    cart.push(product);
+    const existingProductIndex = state.cart.findIndex(
+      (item) => item.id === product.id
+    );
+
+    let updatedCart;
+    if (existingProductIndex > -1) {
+      // Product exists, update quantity
+      updatedCart = state.cart.map((item, index) =>
+        index === existingProductIndex
+          ? { ...item, buyQty: item.buyQty + buyQty }
+          : item
+      );
+    } else {
+      // Product does not exist, add it to the cart
+      updatedCart = [...state.cart, { ...product, buyQty: buyQty }];
+    }
 
     dispatch({
       type: "UPDATE_CART",
-      payload: cart,
+      payload: updatedCart,
     });
   };
   return (

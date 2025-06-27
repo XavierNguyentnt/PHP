@@ -3,6 +3,7 @@ import { useParams } from "react-router-dom";
 import axios_instance from "../../util/axios_instance";
 import { Col, Container, Row } from "react-bootstrap";
 import Product from "../shared/product";
+import URL from "../../util/url";
 
 const Category = () => {
   const { id } = useParams();
@@ -10,7 +11,7 @@ const Category = () => {
   // lay san pham cua danh muc
   const get_products = async () => {
     try {
-      const url = "/category_product.php?category_id=" + id;
+      const url = URL.CATEGORY_PRODUCT + id;
       const rs = await axios_instance.get(url);
       const data = rs.data.data;
       setProducts(data);

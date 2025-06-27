@@ -1,6 +1,4 @@
-import logo from "./logo.svg";
 import "./App.css";
-import { useState, useEffect } from "react";
 import Header from "./components/common/Header";
 import Menu from "./components/common/Menu";
 import { Route, Routes } from "react-router-dom";
@@ -14,7 +12,14 @@ import reducer from "./context/reducer";
 import { UserProvider } from "./context/context";
 
 function App() {
-  const [state, dispatch] = useReducer(reducer, STATE);
+  let storage = localStorage.getItem("state");
+  if (storage != null) {
+    // Use the stored state if it exists, otherwise use the initial state
+    storage = JSON.parse(storage);
+  } else {
+    storage = STATE;
+  }
+  const [state, dispatch] = useReducer(reducer, storage);
   return (
     <UserProvider value={{ state, dispatch }}>
       <div className="App">
