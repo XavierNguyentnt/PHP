@@ -9,10 +9,13 @@ function Header() {
           <h1>LOGO</h1>
         </Col>
         <Col xs={6} className="text-right">
-          <Link className="p-2" to={"/login"}>
+          <Link className="btn btn-primary me-2" to={"/login"}>
             Login
           </Link>
-          <Link to={"/register"}>Regsiter</Link>
+
+          <Link className="btn btn-success me-2" to={"/register"}>
+            Register
+          </Link>
         </Col>
       </Row>
     </header>

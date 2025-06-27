@@ -6,6 +6,7 @@ import Home from "./components/pages/Home";
 import Category from "./components/pages/Category";
 import Search from "./components/pages/Search";
 import Detail from "./components/pages/Detail";
+import Cart from "./components/pages/Cart";
 import { useReducer } from "react";
 import STATE from "./context/initState";
 import reducer from "./context/reducer";
@@ -31,6 +32,7 @@ function App() {
             <Route path="/category/:id" Component={Category} />
             <Route path="/search" Component={Search} />
             <Route path="/detail/:id" Component={Detail} />
+            <Route path="/cart" Component={Cart} />
           </Routes>
         </main>
       </div>

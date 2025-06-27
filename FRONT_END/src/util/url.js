@@ -1,5 +1,5 @@
 const URL = {
-  BASE_URL: "/api",
+  BASE_URL: "http://localhost:8888/api",
   CATEGORIES: "/categories.php",
   DETAIL_PRODUCT: "/detail_products.php?id=",
   CATEGORY_PRODUCT: "/category_products.php?category_id=",

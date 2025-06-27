@@ -60,7 +60,11 @@ const Detail = () => {
     <Container>
       <Row>
         <Col xs={6}>
-          <img src={product.thumbnail} className="w-100 img-thumbnail" />
+          <img
+            src={product.thumbnail}
+            alt={product.name || "Product image"}
+            className="w-100 img-thumbnail"
+          />
         </Col>
         <Col xs={6} className="text-start">
           <h1>{product.name}</h1>
@@ -78,9 +82,8 @@ const Detail = () => {
             />
             <button
               onClick={add_to_cart}
-              class="btn btn-outline-primary"
-              type="button"
-            >
+              className="btn btn-outline-primary"
+              type="button">
               Add to cart
             </button>
           </div>
