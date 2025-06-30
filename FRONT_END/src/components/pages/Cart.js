@@ -180,13 +180,7 @@ const Cart = () => {
           </Table>
           {/* THÊM DÒNG TỔNG TIỀN CỦA MẶT HÀNG ĐÃ CHỌN VÀ NÚT MUA HÀNG */}
           <div className="d-flex justify-content-end align-items-center mt-4">
-            <Link
-              to="/checkout"
-              className="btn btn-primary"
-              variant="success"
-              onClick={handlePurchase}
-              disabled={selectedItems.length === 0} // Vô hiệu hóa nếu không có gì được chọn
-            >
+            <Link to={"/checkout"} className="btn btn-primary">
               Purchase Selected Items
             </Link>
           </div>
