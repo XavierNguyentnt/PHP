@@ -157,7 +157,8 @@ const Cart = () => {
                   <td>
                     <Button
                       variant="danger"
-                      onClick={() => handleRemove(item.id)}>
+                      onClick={() => handleRemove(item.id)}
+                    >
                       Remove
                     </Button>
                   </td>
