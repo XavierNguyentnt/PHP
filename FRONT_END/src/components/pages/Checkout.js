@@ -5,6 +5,12 @@ import { PayPalButtons, PayPalScriptProvider } from "@paypal/react-paypal-js";
 import axios_instance from "../../util/axios_instance";
 
 const Checkout = () => {
+  const options = {
+    clientId:
+      "AT4E9IB2vgxdsijJPafKedX-ouYG_io2swXTVM-ssc5Cm4X7YKgN9pkpbRUlznDaG6kNg6BFpstxdXyO",
+    currency: "USD",
+    intent: "capture",
+  };
   const { state, dispatch } = useContext(UserContext);
   const { order, setOrder } = useState({
     id: null,
@@ -110,7 +116,7 @@ const Checkout = () => {
             <tfoot>
               <tr>
                 <td className="text-end" colSpan={6}>
-                  <PayPalScriptProvider options={{ clientId: "test" }}>
+                  <PayPalScriptProvider options={{ options }}>
                     <PayPalButtons
                       createOrder={create_order}
                       onApprove={on_approve}
