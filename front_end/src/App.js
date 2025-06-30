@@ -11,6 +11,7 @@ import { useReducer } from "react";
 import STATE from "./context/initState";
 import reducer from "./context/reducer";
 import { UserProvider } from "./context/context";
+import Checkout from "./components/pages/Checkout";
 
 function App() {
   let storage = localStorage.getItem("state");
@@ -33,6 +34,7 @@ function App() {
             <Route path="/search" Component={Search} />
             <Route path="/detail/:id" Component={Detail} />
             <Route path="/cart" Component={Cart} />
+            <Route path="/checkout" Component={Checkout} />
           </Routes>
         </main>
       </div>
