@@ -11,5 +11,7 @@ const URL = {
   CREATE_ORDER: "/create_order.php",
   ORDER_DETAIL: "/order_detail.php?id=",
   UPDATE_ORDER: "/update_order.php",
+  PAYPAL_CREATE_ORDER_API_ENDPOINT: "/paypal_create_order.php",
+  PAYPAL_CAPTURE_ORDER_API_ENDPOINT: "/paypal_capture_order.php",
 };
 export default URL;

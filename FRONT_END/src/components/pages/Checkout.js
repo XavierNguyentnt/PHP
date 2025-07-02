@@ -284,7 +284,8 @@ const Checkout = () => {
                   "AT4E9IB2vgxdsijJPafKedX-ouYG_io2swXTVM-ssc5Cm4X7YKgN9pkpbRUlznDaG6kNg6BFpstxdXyO", // Client ID của bạn
                 currency: "USD",
                 intent: "capture",
-              }}>
+              }}
+            >
               <PayPalButtons
                 createOrder={create_paypal_order}
                 onApprove={on_paypal_approve}
