@@ -1,21 +1,23 @@
 import { useContext, useState, useEffect } from "react";
 import { Button, Container, Table, Image, Form } from "react-bootstrap";
 import UserContext from "../../context/context";
-import { Link } from "react-router-dom";
-import axios_instance from "../../util/axios_instance"; // Đảm bảo bạn có import này
-import URL from "../../util/url"; // Đảm bảo bạn có import này
+import { Link, useNavigate } from "react-router-dom"; // THÊM useNavigate
+import axios_instance from "../../util/axios_instance";
+import URL from "../../util/url";
 
 const Cart = () => {
   const { state, dispatch } = useContext(UserContext);
+  const navigate = useNavigate(); // KHỞI TẠO useNavigate
+
   const [selectedItems, setSelectedItems] = useState([]);
   const [totalSelectedPrice, setTotalSelectedPrice] = useState(0);
 
-  //Cập nhật tổng tiền các mặt hàng được chọn
+  // Cập nhật tổng tiền các mặt hàng được chọn
   useEffect(() => {
     let total = 0;
     state.cart.forEach((item) => {
       if (selectedItems.includes(item.id)) {
-        total += item.price * item.buyQty; // Sử dụng item.buyQty
+        total += item.price * item.buyQty;
       }
     });
     setTotalSelectedPrice(total);
@@ -44,7 +46,7 @@ const Cart = () => {
     const orderData = {
       items: itemsToPurchase.map((item) => ({
         product_id: item.id,
-        quantity: item.buyQty, // Sử dụng item.buyQty
+        quantity: item.buyQty,
         price: item.price,
       })),
       total_amount: totalSelectedPrice,
@@ -53,18 +55,26 @@ const Cart = () => {
 
     try {
       const response = await axios_instance.post(URL.CREATE_ORDER, orderData);
-      console.log("Order created successfully:", response.data);
+      console.log("Order creation response:", response.data);
 
       if (response.data.success) {
-        alert("Đơn hàng đã được tạo thành công!");
+        alert(
+          "Đơn hàng đã được tạo thành công! Chuyển hướng đến trang thanh toán."
+        );
+
         // Cập nhật giỏ hàng: xóa các sản phẩm đã mua
         const remainingCartItems = state.cart.filter(
           (item) => !selectedItems.includes(item.id)
         );
-        dispatch({ type: "UPDATE_CART", payload: remainingCartItems }); // Đảm bảo type khớp với reducer của bạn
+        dispatch({ type: "UPDATE_CART", payload: remainingCartItems });
         setSelectedItems([]); // Xóa các mặt hàng đã chọn
-        // Có thể chuyển hướng người dùng ở đây nếu muốn
-        // navigate('/order-confirmation/' + response.data.order_id);
+        setTotalSelectedPrice(0); // Reset tổng tiền đã chọn
+
+        // CHUYỂN HƯỚNG SANG TRANG CHECKOUT CHỈ KHI API THÀNH CÔNG
+        // Truyền orderData và orderId nếu backend trả về
+        navigate("/checkout", {
+          state: { orderId: response.data.data, orderData: orderData },
+        });
       } else {
         alert("Có lỗi xảy ra khi tạo đơn hàng: " + response.data.message);
       }
@@ -80,6 +90,10 @@ const Cart = () => {
       type: "UPDATE_CART",
       payload: updatedCart,
     });
+    // Đảm bảo bỏ chọn sản phẩm đó nếu nó đang được chọn khi bị xóa khỏi giỏ hàng
+    setSelectedItems((prevSelectedItems) =>
+      prevSelectedItems.filter((id) => id !== productId)
+    );
   };
 
   const handleQuantityChange = (productId, newQty) => {
@@ -114,7 +128,7 @@ const Cart = () => {
           <Table striped bordered hover responsive>
             <thead>
               <tr>
-                <th>Select</th> {/* THÊM CỘT CHỌN */}
+                <th>Select</th>
                 <th>Product</th>
                 <th>Price</th>
                 <th>Quantity</th>
@@ -126,7 +140,7 @@ const Cart = () => {
               {state.cart.map((item) => (
                 <tr key={item.id}>
                   <td>
-                    <Form.Check // THÊM CHECKBOX VÀO ĐÂY
+                    <Form.Check
                       type="checkbox"
                       checked={selectedItems.includes(item.id)}
                       onChange={() => handleCheckboxChange(item.id)}
@@ -142,7 +156,7 @@ const Cart = () => {
                       type="number"
                       value={item.buyQty}
                       min="1"
-                      max={item.qty} // Giới hạn số lượng mua không quá số lượng tồn kho (qty)
+                      max={item.qty}
                       onChange={(e) =>
                         handleQuantityChange(
                           item.id,
@@ -157,8 +171,7 @@ const Cart = () => {
                   <td>
                     <Button
                       variant="danger"
-                      onClick={() => handleRemove(item.id)}
-                    >
+                      onClick={() => handleRemove(item.id)}>
                       Remove
                     </Button>
                   </td>
@@ -168,8 +181,7 @@ const Cart = () => {
             <tfoot>
               <tr>
                 <td colSpan="4" className="text-end">
-                  {/* Điều chỉnh colSpan do đã thêm cột Select */}
-                  <strong>Total Cart Price</strong> {/* Đổi tên cho rõ ràng */}
+                  <strong>Total Cart Price</strong>
                 </td>
                 <td>
                   <strong>${calculateTotalCartPrice()}</strong>
@@ -178,11 +190,17 @@ const Cart = () => {
               </tr>
             </tfoot>
           </Table>
-          {/* THÊM DÒNG TỔNG TIỀN CỦA MẶT HÀNG ĐÃ CHỌN VÀ NÚT MUA HÀNG */}
           <div className="d-flex justify-content-end align-items-center mt-4">
-            <Link to={"/checkout"} className="btn btn-primary">
+            <h4 className="me-3">
+              Total Selected Items Price: ${totalSelectedPrice.toFixed(2)}
+            </h4>
+            {/* THAY THẾ LINK BẰNG BUTTON VÀ GỌI HANDLEPURCHASE TRỰC TIẾP */}
+            <Button
+              variant="success"
+              onClick={handlePurchase}
+              disabled={selectedItems.length === 0}>
               Purchase Selected Items
-            </Link>
+            </Button>
           </div>
         </>
       )}
