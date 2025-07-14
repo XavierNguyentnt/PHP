@@ -9,7 +9,7 @@ import URL from "../../util/url";
 const Checkout = () => {
   const options = {
     clientId:
-      "AZFEOYBfFE-wy0qQI2cwemlCTeSwUM0PoadhQ23nJbHoFSxQQzW7w3OsHROlaS9nnYOg87jDxBVilTht",
+      "AT4E9IB2vgxdsijJPafKedX-ouYG_io2swXTVM-ssc5Cm4X7YKgN9pkpbRUlznDaG6kNg6BFpstxdXyO",
     currency: "USD",
     intent: "capture",
   };
@@ -90,7 +90,8 @@ const Checkout = () => {
               name="address"
               value={order.address}
               onChange={inputHanle}
-              className="form-control"></textarea>
+              className="form-control"
+            ></textarea>
           </div>
         </Col>
         <Col>
