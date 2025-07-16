@@ -4,13 +4,11 @@ const update_storage = (state) => {
 };
 const reducer = (state, action) => {
   switch (action.type) {
-    case "UPDATE_CART": {
-      const newState = {
+    case "UPDATE_CART":
+      return update_storage({
         ...state,
         cart: action.payload,
-      };
-      return update_storage(newState);
-    }
+      });
     default:
       return state;
   }

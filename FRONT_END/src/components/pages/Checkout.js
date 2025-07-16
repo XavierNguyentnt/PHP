@@ -90,8 +90,7 @@ const Checkout = () => {
               name="address"
               value={order.address}
               onChange={inputHanle}
-              className="form-control"
-            ></textarea>
+              className="form-control"></textarea>
           </div>
         </Col>
         <Col>

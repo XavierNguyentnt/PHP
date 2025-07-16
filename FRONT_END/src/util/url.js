@@ -1,17 +1,13 @@
 const URL = {
-  BASE_URL: "http://localhost:8888/api",
-  CATEGORIES: "/categories.php",
+  BASE_URL: "http://localhost:8888/api/",
   DETAIL_PRODUCT: "/detail_products.php?id=",
   CATEGORY_PRODUCT: "/category_products.php?category_id=",
-  FEATURED_PRODUCT: "/featured_products.php",
   LATEST_PRODUCT: "/latest_products.php",
-  CART: "/cart.php",
-  ADD_TO_CART: "/add_to_cart.php",
-  SEARCH_PRODUCT: "/search_products.php?id=",
+  FEATURED_PRODUCT: "/featured_products.php",
+  CATEGORY_LIST: "/categories.php",
+  SEARCH: "....",
   CREATE_ORDER: "/create_order.php",
-  ORDER_DETAIL: "/order_detail.php?id=",
   UPDATE_ORDER: "/update_order.php",
-  PAYPAL_CREATE_ORDER_API_ENDPOINT: "/paypal_create_order.php",
-  PAYPAL_CAPTURE_ORDER_API_ENDPOINT: "/paypal_capture_order.php",
+  DETAIL_ORDER: "......",
 };
 export default URL;

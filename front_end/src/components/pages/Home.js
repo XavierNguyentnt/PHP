@@ -9,25 +9,17 @@ const Home = () => {
   const [latestProducts, setLatestProducts] = useState([]);
   // get data featured product
   const get_featured = async () => {
-    try {
-      const url = URL.FEATURED_PRODUCT; // Replace with actual URL
-      const rs = await axios_instance.get(url);
-      const data = rs.data.data;
-      setFeaturedProducts(data);
-    } catch (error) {
-      console.error("Error fetching featured products:", error);
-    }
+    const url = URL.FEATURED_PRODUCT;
+    const rs = await axios_instance.get(url);
+    const data = rs.data.data;
+    setFeaturedProducts(data);
   };
   // get data latest product
   const get_latest = async () => {
-    try {
-      const url = URL.LATEST_PRODUCT; // Replace with actual URLp";
-      const rs = await axios_instance.get(url);
-      const data = rs.data.data;
-      setLatestProducts(data);
-    } catch (error) {
-      console.error("Error fetching latest products:", error);
-    }
+    const url = URL.LATEST_PRODUCT;
+    const rs = await axios_instance.get(url);
+    const data = rs.data.data;
+    setLatestProducts(data);
   };
   useEffect(() => {
     get_featured();

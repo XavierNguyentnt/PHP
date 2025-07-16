@@ -10,14 +10,10 @@ const Category = () => {
   const [products, setProducts] = useState([]);
   // lay san pham cua danh muc
   const get_products = async () => {
-    try {
-      const url = URL.CATEGORY_PRODUCT + id;
-      const rs = await axios_instance.get(url);
-      const data = rs.data.data;
-      setProducts(data);
-    } catch (error) {
-      console.error(`Error fetching products for category ${id}:`, error);
-    }
+    const url = URL.CATEGORY_PRODUCT + id;
+    const rs = await axios_instance.get(url);
+    const data = rs.data.data;
+    setProducts(data);
   };
   useEffect(() => {
     get_products();
