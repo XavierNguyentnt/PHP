@@ -1,17 +1,18 @@
 import logo from "./logo.svg";
 import "./App.css";
 import { useState, useEffect } from "react";
+import STATE from "./context/initState";
+import reducer from "./context/reducer";
+import { UserProvider } from "./context/context";
+import { Route, Routes } from "react-router-dom";
+import { useReducer } from "react";
+
 import Header from "./components/common/Header";
 import Menu from "./components/common/Menu";
-import { Route, Routes } from "react-router-dom";
 import Home from "./components/pages/Home";
 import Category from "./components/pages/Category";
 import Search from "./components/pages/Search";
 import Detail from "./components/pages/Detail";
-import { useReducer } from "react";
-import STATE from "./context/initState";
-import reducer from "./context/reducer";
-import { UserProvider } from "./context/context";
 import Cart from "./components/pages/Cart";
 import Checkout from "./components/pages/Checkout";
 
